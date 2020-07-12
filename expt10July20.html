@@ -1,0 +1,29 @@
+<! DOCTYPE html>
+<html>
+<head>
+
+ <script>
+                    function insideHead() {
+                                     alert('I ambeing called through function insideHead() ' )
+                    }// end of function insideHead()
+</script>
+
+<script> alert("I am inside the <head> </head> tags")</script>
+
+</head>
+
+<body>
+<p id='p1'> </p>
+
+
+<script> 
+        function insideBody(){
+		alert("I am being called throgh function insideBody()")
+       }//end of function insideBody()
+</script>
+<script> alert("I am inside the <body> </body> tags") </script>
+
+document.getElementById('p1').innerHTML=' I am coming through script'
+
+</body>
+</html>

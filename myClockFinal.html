@@ -1,0 +1,151 @@
+ <!DOCTYPE html>
+<html>
+	<head>
+		<title>Analogue Clock With Arrow Hands</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>
+		<script>
+			
+			
+			function setup(){
+				createCanvas(1500, 1550);
+				//background(200);
+				xc=width/3;yc=height/3;
+				angleMode(DEGREES);
+				HrHand=100;
+				MinHand=HrHand*1.2;
+				SecHand=MinHand;
+				ck = MinHand*2.2;
+				rot=0;
+				frac=.2;flare=20;
+				textSize(20);
+				hh=0;
+			}
+			
+			function draw(){
+			//ellipse(mouseX,mouseY,(mouseX-pmouseX)*2,(mouseY-pmouseY)*2);
+			//background(20,20,10,10);
+			background(0,0,255,10);
+			strokeWeight(5);
+			
+			fill(0,0,0,20);
+			stroke(234,213,89);
+			ellipse(xc,yc,ck,ck);//clock outline circle
+			ellipse(xc,yc,15,15); // centre circle
+			// <------------- Clock face numbers and markings
+			hh=0; k=1.8;
+			for( mang=-60;mang <275;mang = mang+30  ) {
+			   mang1=mang;
+			   hh=hh+1;
+			   if(hh === 12 ){mang1=mang1-3}
+			   if((hh === 6) || ( hh ===7) || (hh === 8) || (hh === 9) ) { k=1.7} else { k =1.8}
+			   xm=xc+ck/2*cos(mang);
+			   ym=yc+ck/2*sin(mang);
+			   xm1=xc+ck/k*cos(mang1);
+			   ym1=yc+ck/k*sin(mang1);	
+			   stroke(255,255,255,200);
+			   text(hh,xm1,ym1); // display numbers
+			   ellipse(xm,ym,10,10); // disp 12 dots at hour pos
+			}// end of for loop
+			
+			
+           for ( a =0;a < 360;a+=6  ){
+		     xms=xc+ck/2*cos(a);
+			 yms=yc+ck/2*sin(a);
+			 ellipse(xms,yms,2,2); // disp 60 dots at hour pos
+		   
+		   }// end of for loop for 60 dots
+
+
+
+
+
+
+			
+			Hr=hour(); // Reported by system
+			Min=minute(); // Reported by system
+			Sec=second(); // reported by system
+			Hr=Hr+Min/60; // Hrs with mins added
+			Min=Min+Sec/60; // Mins with seconds added
+			
+			//Hr=3;
+			//Min=0;
+			//Sec=60;
+			
+			
+			if ( Hr > 12  ) {Hr=(Hr-12)}// 24 hr to 12 hr
+			SecAng=(Sec-15)*6;
+			//MinAng= (Min-15)*6+(SecAng+90 )/60;
+			//HrAng=(Hr-3)*30+(MinAng+90)/12;;
+			
+			MinAng= (Min-15)*6;
+			HrAng=(Hr-3)*30;
+			
+			
+			xHr=xc+HrHand*cos(HrAng);
+			yHr=yc+HrHand*sin(HrAng);
+			
+			xHrd=xc+HrHand*1.3*cos(HrAng);
+			yHrd=yc+HrHand*1.3*sin(HrAng);
+			
+			
+			stroke(255,255,0);
+			arrow(xc,yc,xHr,yHr,frac,flare);// Hr hand
+			line(xc,yc,xHr,yHr);// Hr hand
+			
+			xMin=xc+MinHand*cos(MinAng);
+			yMin=yc+MinHand*sin(MinAng);
+			stroke(0,255,0);
+			line(xc,yc,xMin,yMin,);// Min hand
+			arrow(xc,yc,xMin,yMin,frac,flare);// Min hand
+			//line(xc,yc,xMin,yMin);// Min hand
+			
+			xSec=xc+SecHand*cos(SecAng);
+			ySec=yc+SecHand*sin(SecAng);
+			stroke(255,255,0);
+			strokeWeight(1);
+			arrow(xc,yc,xSec,ySec,frac,flare);
+			//line(xc,yc,xSec,ySec);// Sec hand
+			//text(HrAng,300,300);
+			//text(Hr,300,350);
+			stroke(255,255,25);
+			textSize(40);
+			text(hour()+'  '+minute()+'  '+second(),xc-80,yc+200);//Digital Clock
+			textSize(18);
+			//text(Hr+' Hrs',xHrd,yHrd);
+			//text(Min+ 'Mins',xMin+8,yMin+9);
+			//text(Sec+' Secs',xSec,ySec+15);
+		
+			}
+		</script>
+	</head>
+	<body>
+	<script>
+	function arrow(x1,y1,x2,y2,frac,flare){
+	dx=x2-x1; dy=y2-y1;
+	aLen=sqrt(dx*dx+dy*dy);
+	aMag=aLen*frac;
+	theta=atan2(dy,dx);
+	thetaPI=theta+180;
+	
+	theta1=thetaPI-flare;
+	theta2=thetaPI+flare;
+	
+	x3=x2+ aMag*cos(theta1);
+	y3=y2+aMag*sin(theta1);
+	
+	x4=x2+ aMag*cos(theta2);
+	y4=y2+ aMag*sin(theta2);
+	
+	line(x1,y1,x2,y2); // Main length 
+	line(x2,y2,x3,y3); // flare 1
+	line(x2,y2,x4,y4); // flare 2
+	line(x3,y3,x1,y1); // soild arrow
+	line(x4,y4,x1,y1); //soild arrow
+	//print(theta);
+	}
+	</script>
+	
+	</body>
+</html>

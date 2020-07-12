@@ -1,0 +1,85 @@
+<html>
+<head>
+<title> My To Do App </title>
+<style>      </style>
+
+<script>
+	function delTask(n){
+		x=document.getElementById("task1")
+		y=document.getElementById("task2")
+
+		if(n==1){x.value="";x.readOnly=false}
+		if(n==2){y.value="";y.readOnly=false}
+
+}//end of function delTask()
+
+	function mySave(m){
+		x=document.getElementById("task1")
+		y=document.getElementById("task2")
+		if(m==1){ x.readOnly=true}
+		if(m==2){ y.readOnly=true}
+}//end of function mySave()
+
+	function unLock(m){
+		x=document.getElementById("task1")
+		y=document.getElementById("task2")
+		if(m==1){ x.readOnly=false}
+		if(m==2){ y.readOnly=false}
+}//end of function mySave()
+
+	function addInput() {
+		var Btn1=document.createElement("button")
+		Btn1.innerHTML="Lock"
+		Btn1.id="B1"
+		var Btn2=document.createElement("button")
+		Btn2.innerHTML="Delete"
+		Btn2.id="B2"
+		var Btn3=document.createElement("button")
+		Btn3.innerHTML="Unlock"
+		Btn3.id="B3"
+		var insertLine=document.createElement("div")
+		insertLine.innerHTML='<br>'
+		var freshInput = document.createElement("input");
+		freshInput.id="zzzz"
+		freshInput.size=60
+		freshInput.value = "This is a new task ";
+		refNode=document.querySelector("#createInput ")
+		refNode.before(freshInput)
+		freshInput.after(Btn1)
+		Btn1.after(Btn2)
+		Btn2.after(Btn3)
+		refNode.before(insertLine)
+  }// end of function 
+
+</script>
+
+</head>
+<body>
+<h1> My To Do List App </h1>
+<h2> srbhide ... 27 Dec 2019 </h2>
+
+<input id="task1" value=Item#1  size="60"> </input> 
+<button id="b11" onclick="mySave(1)"> Lock</button>
+ <button id="b12" onclick="delTask(1)"> Delete</button> 
+ <button id="b13" onclick="unLock(1)"> Unlock</button> 
+<br><br>
+<input id="task2" value=Item#2 size="60">  </input> 
+<button id="b21"onclick="mySave(2)" > Lock</button> 
+<button id="b22" onclick="delTask(2)"> Delete</button> 
+<button id="b23" onclick="unLock(2)"> Unlock</button> 
+<br><br>
+<button id="createInput" onclick="addInput()"> Add One More Task</button> 
+</body>
+<style>
+body{background-color:lightYellow; font-size:25;}
+#B1{margin-left:8px;}
+#B2{margin-left:8px;}
+#B3{margin-left:8px;}
+#task1{margin-left:80px;}
+#task2{margin-left:80px;}
+#createInput{margin-left:80px;}
+#zzzz{margin-left:80px;}
+h1,h2{text-align:center;}
+</style>
+
+</html>

@@ -1,0 +1,93 @@
+<html>
+<head>
+<title>Creative Combinations </title>
+
+<style>
+body {
+background-color:lightgreen;
+}
+</style>
+<style>
+.dispIdea {
+text-align:center;
+font-size: 350%;
+}
+</style>
+
+<style>
+h1 {
+text-align:center;
+}
+</style>
+<style>
+button {
+background-color:orange;
+
+}
+</style>
+
+
+
+
+<script>
+
+ var ideas1 =[
+             'Will not appear',' voice operated ','telescopic  ','self driving','red chilli powder','sweet', 'edible','water proof',
+			 'portable', 'transparent',' automatic ' , 'self filling ' , ' wi-fi  ' ,' blue tooth ', ' usb stick ',
+			 'bio-degradable',' organic ', ' flying   ','piezo electric  ','pocket' , ' remote controlled ' , ' wireless ' ,
+			 'internet',' call a ',' nano ',' organic ','disposable', 'paper   ', '  bamboo' ,' driverless' ,
+			 'microscopic  ',' holographic    ', ' drone for dispensing ',' drone ',' software defined',' fluroscent ',
+			 'magnetic ', ' electric',' solar powered' ,' 3-D printed','self duplicating','edible ' , 'cloud based ',
+			 'crypto  ',' block chain  ' ,'bit coin  ',' tree as ',' LED in side ',' aromatic  ',' RF energy harvesting', ' sound energy harvesting ',
+			 ' QR code  '
+			 
+		];
+
+var ideas2 =[
+             'what ever  ',' tablet       ','computer ','laptop ',' tv  ',' radio ',' mobile phone','  car    ','scooter     ',
+			 ' auto','vacuum cleaner','zadu     ','mop    ','chalk',' cone  ',' chair       ', ' shaver ',' food mixer ', 
+			 ' pressure cooker ',' fridge ', ' drone' ,' book ', ' pencil ', ' pen ' ,' bus ', ' train ' , 'chocolate ' , 
+			 ' music player ',' alarm clock',' wrist watch ','health band  ',' speaker  ' , ' microphone ',
+			 ' keyboard ', ' air-plane ' , ' baloon ' ,' origami   ', ' paper ' , ' chess board   ', ' chess pieces ',
+			 ' noodles ','cap','tooth-paste','shirt',' pant ',' sweater  ' , ' knife ', ' medicines  ', ' ear wax remover', ' chilli powder',
+			 ' DDT ', 'finyle', ' gomutra  ' , 'scent' ,' horrible smell to disperse cloud', 'prasad','medicines','handbills','baloon',
+			 ' drone ','neem  ', ' antenna',' transmitter','speaker ','shoe ','camera','samosa','food','handbills ','paper  ',
+			 ' teleconferencing ',' song ' ,' audio ',' picture ' ,' poem ',' short story  ',' currency ','food  ',
+			 ' labels',' battery',' super-capacitor ',' music ',' sound '
+			 
+			 
+		];
+
+
+
+		
+function Ideate()
+{
+var y1=ideas1.length-1;
+var y2=ideas2.length-1;
+var x1 = Math.floor((Math.random() * y1) + 1);
+var x2 = Math.floor((Math.random() * y2) + 1);
+//alert('inside ideate()');
+document.getElementById('displayIdea').innerHTML = ideas1[x1] + "  ======> " + ideas2[x2] ;
+
+}	  
+
+</script>
+</head>
+<body>
+
+<h1> cReATivE CoMbiNaTiOnS !!! </h1>
+<h1> Creativity </h1>
+
+<!-- 
+<p style="text-indent: 5em;"> This will start after 5 characters </p>
+
+-->
+
+<span style="display:inline-block; width: 600;"></span>
+<button id='createIdea'  onclick='Ideate()'  > Click To  Create Idea </button>
+
+
+<p id='displayIdea' class='dispIdea' > </p>
+</body>
+</html>

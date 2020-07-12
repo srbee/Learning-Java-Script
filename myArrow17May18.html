@@ -1,0 +1,123 @@
+<html>
+<head>
+<meta  name="viewport" content="width=device-width,  initial-scale=1.0">
+
+<style>
+
+html, body {
+  width:  100%;
+  height: 100%;
+  margin: 0px;
+}
+</style>
+<script>
+function myArrow(event){
+     
+	 
+	 //var x = event.clientX;
+    //var y = event.clientY;
+	  
+	 
+	
+	 var a=0.8*(myCanvas.width/2); 
+	 var b=0.8*(myCanvas.height/2);
+	 
+	 
+	 ranCorx1=a-2*a*Math.random();
+	 ranCory1=b-2*b*Math.random();
+	 
+	 
+	 ranCorx2=a-2*a*Math.random();
+	 ranCory2=b-2*b*Math.random();
+	 
+	 var x1= ranCorx1; var y1= ranCory1;
+	 
+	 var x2 = event.clientX;
+    var y2 = event.clientY;
+	 
+	 
+     //var x2= ranCorx2; var y2= ranCory2;
+	 
+	 x1=((myCanvas.width)/2 )+ x1;
+	 y1=((myCanvas.height)/2)- y1;
+	 
+	 x2=((myCanvas.width)/2)+  x2;
+	 y2=((myCanvas.height)/2)- y2;
+	 
+	 var xx =  Math.pow((x1-x2),2);
+	 var yy =  Math.pow((y1-y2),2);
+	 var r  =   Math.sqrt(xx+yy);
+	 
+	 var sf=0.15; // length shortening factor
+	 
+     ctx.beginPath();
+     ctx.moveTo(x1,y1);
+     ctx.lineTo(x2,y2);
+	 
+	slope= (180/Math.PI )*  Math.atan2( (y2-y1  ),( x1-x2 ));
+	var theta = slope*(Math.PI/180);
+	var arrow_ang=30; // degrees
+	arrow_ang = arrow_ang*(Math.PI/180 ); // radians
+	ctx.font = "30px Arial";
+	
+	//ctx.fillText("slope = ",x1-100,y1+250);
+    //ctx.fillText(slope,x1,y1+250);
+	
+	//ctx.fillText("length = ",x1-110,y1+200);
+	//ctx.fillText(r,x1,y1+200);
+	
+	
+	x3 = x2 + r*sf*Math.cos(theta-arrow_ang);
+	y3 = y2 - r*sf*Math.sin(theta-arrow_ang);
+	
+	x4 = x2 + r*sf*Math.cos(theta+arrow_ang);
+	y4 = y2 - r*sf*Math.sin(theta+arrow_ang);
+	
+	
+	ctx.moveTo(x2,y2);
+	ctx.lineTo(x3,y3);
+	
+	ctx.moveTo(x2,y2);
+	ctx.lineTo(x4,y4);
+	
+	
+//ctx.strokeStyle="#FF0000";	
+ctx.strokeStyle= 'blue';
+ctx.stroke();
+}
+ 
+
+function myClearCanvas(){
+ctx.clearRect(0,0,myCanvas.width,myCanvas.height);
+}
+
+ 
+
+</script>
+</head>
+<body >
+   
+ <button id='b1'   onclick='myArrow()'    > Draw Arrow</button>
+ <button id='b2'   onclick='myClearCanvas()' > Clr Screen </button>
+<!--
+ <canvas id="myCanvas" width="1200" height="600" style="border:1px solid #d3d3d3;">
+!-->
+ <canvas id="myCanvas" width="device.width" height="600" style="border:1px solid #d3d3d3;">
+ 
+ 
+<script>
+//var cycles=1;
+var width=1200;
+var height=600;
+var ampli=height/2;
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+
+
+</script>
+
+
+
+</body>
+</html>
+

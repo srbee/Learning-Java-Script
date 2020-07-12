@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+//<meta  name="viewport" content="width=device-width,  initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<script>
+// add a slider for time constat of the circuit
+var theta=pi()/2;
+var phi=pi()/2;
+var tau=1000;
+
+function sin(a){return Math.sin(a);}
+function pi(){ return Math.PI};
+
+function mySet(){
+         
+		 
+		 
+		 if( arguments[1]==1) 
+		 
+		 {
+		 p=arguments[0];
+		 phi=p*((Math.PI)/180);
+         document.getElementById('prt').innerHTML="Phase Angle= "+p+" degrees";
+         ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+         dcOffset();
+		 }
+
+		if( arguments[1]==2) 
+		 
+		 {
+		 rr=arguments[0];
+		 theta=rr*((Math.PI)/180);  
+         document.getElementById('Sw').innerHTML="Switching Angle = "+rr ;		 
+         ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+         dcOffset();
+		 } 
+		 
+		 
+		 
+		 
+}// end of function mySet()
+
+ 
+
+
+function dcOffset(){
+
+ ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+ ctx.beginPath();
+ 
+ 
+for( var t=start; t<stop; t+=step){
+
+    
+	 x             = t*5000*2;// for drawing a sine wave
+	 decayingDC    = Ipeak*Math.exp(-x/tau)*sin(theta-phi);
+	 
+	 steadyStateAC = Ipeak*sin(2*pi()*f*t+(theta-phi));
+	 
+	y             = steadyStateAC-decayingDC;
+	
+	y1             = -decayingDC;
+	 yzero         =height/2;
+     y             = (height/2)-y;	
+	 
+	 ctx.lineTo(x,y);
+	 ctx.lineTo(x,yzero);
+	 
+    // ctx.arc(x,y,r,sA,eA);
+     //ctx.arc(x,yzero,r,sA,eA);
+	 //ctx.moveTo(x,yzero)
+	// ctx.lineTo(x,y1);
+}
+ctx.stroke();
+//ctx.font = "16px Georgia";
+//ctx.fillText("Phase Angle="+parseInt(phi*(180/pi())), 5, 20);
+}// end of dcOffset()
+//ctx.closePath();
+</script>
+</head>
+
+
+
+<body onload="dcOffset()">
+<h1> DC Offset in Fault Current </h1>
+<canvas id="myCanvas" width="1200" height="400" style="border:1px solid red;"></canvas>
+
+<br/>
+<input type="range" min="-90" max="90" value="0" class="slider" id="myRange"  onchange='mySet((this.value),1)'> Phase Angle
+<br/>
+<input type="range" min="-180" max="180" value="90" class="slider" id="switchingAngle" onchange='mySet((this.value),2)'>Switching Angle
+
+<br/>
+<p id='prt'>  </p>
+<p id='Sw'> </p>
+ 
+ <script>
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+//var x; var y;
+var f=50; 
+//var fRatio=1;
+//var fy=fRatio*fx;
+//var phiX=120*Math.PI/180; 
+//var phiX=0; 
+
+
+var width=myCanvas.width;
+var height=myCanvas.height;
+var start=0; T=1/f;
+var stop=12*T; 
+var step=T/1e2;
+//ctx.moveTo(width/2,height/2);
+r=0.1;
+var sA=0; var eA=2*Math.PI;
+ctx.beginPath();
+var Ipeak;
+var Vpeak=10000;
+var R=.3;
+var XbyR=300;
+
+
+var w = 2*pi()*f;
+var XL=R*XbyR;// x is used as x-coordinate
+var L = XL/(2*pi()*f  );
+var Z = Math.sqrt(R*R+XL*XL);
+var tau = L/R;
+
+var phi=Math.atan(XL/R);
+
+Ipeak=Vpeak/Z;
+
+ </script>
+ 
+ 
+ </body>
+</html>

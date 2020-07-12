@@ -1,0 +1,172 @@
+<html>
+
+  <head>
+  <title> My DFT </title>
+  
+  <script>
+   var x=[],Xcos=[],Xsin=[],Xmag=[],Xph=[];
+   var N; var aa,bb;
+   var p1,p2,p3;
+   var zzz = 19.999999;
+   
+   function mySetColor()
+   {
+   
+	var inputVal = document.getElementById("mysamples");
+    inputVal.style.backgroundColor = "yellow";  
+
+	
+   }// End of function mySetColor()
+   
+   
+     
+   function myDFT()
+   {
+    
+	
+	var a = document.getElementById("mysamples").innerHTML ;
+	    p1 = document.getElementById("dispInputSamples");
+		p2 = document.getElementById("aaDisp");
+		p3 = document.getElementById("bbDisp"); 
+	 document.getElementById("mysamples").disabled=true;
+	 var b =a.split(',');
+	 x =b.map(Number);
+	
+	
+	// Display Inputs
+    p1 = document.getElementById("dispInputSamples");
+    p1.style.visibility='visible';
+	p1.innerHTML= "Input Samples are ==> " + x.toString();
+	
+  // document.getElementById("dispInputSamples").innerHTML=document.getElementById("dispInputSamples").innerHTML + x.toString();
+    
+   
+   var n,m ;
+   N = x.length;
+   // initialize all dfts to zero
+   
+   for (m=0;m<N;m++)
+       {
+         Xcos[m]=0;
+	     Xsin[m]=0;
+	     Xmag[m]=0;
+	     Xph[m]=0;
+      }// End of first for loop
+   
+   for (m=0;m<N;m++)
+   {
+     for (n=0; n<N; n++)
+	 {
+	  Xcos[m]=Xcos[m]+x[n]*Math.cos((2*(Math.PI)*m*n)/(N));
+	  
+	  Xsin[m]=Xsin[m]-x[n]*Math.sin((2*(Math.PI)*m*n)/(N));
+	  //minus sign because of exp(-2*pi*m*n /N)=cos(..)-j*sin(..) 
+	 } // end of inner for loop
+	 
+	  Xmag[m]=Math.sqrt(Xcos[m]*Xcos[m]+Xsin[m]*Xsin[m]);
+	  Xph[m]=Math.atan2(Xsin[m],Xcos[m]);
+	 
+   } // end of outer for loop
+	  
+	 aa=Xcos.join('    ||    ' );
+	 bb=Xsin.join('  j ||    ' );
+	 
+	 //aa=Xcos.toString();	
+	 //bb=Xsin.toString();
+	 
+	 p2.style.visibility='visible';
+	 p3.style.visibility='visible';
+	 p2.innerHTML= "Real parts of DFT ==>" + aa;	 
+	 p3.innerHTML= "Imag parts of DFT ==>" + bb;
+	 
+   } // end of function myHandler()
+    
+	function myDFTAgain()
+	{
+	  document.getElementById("mysamples").disabled=false;
+	 
+	  document.getElementById("mysamples").value="";
+	  
+	  document.getElementById("dispInputSamples").innerHTML="";
+	  
+	  document.getElementById("aaDisp").innerHTML="";
+	  
+	  document.getElementById("bbDisp").innerHTML="";
+	  
+	 		
+        p1.style.visibility='hidden';
+		p2.style.visibility='hidden';		
+		p3.style.visibility='hidden';
+		
+    }// end of function myDFTAgain()
+    
+	  
+	
+	</script>
+	
+	</head>
+	
+	<body onload="mySetColor()">
+	
+	
+	
+	<h1>  Discrete Fourier Transform   </h1>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<h6>  ================ S R Bhide  18 Feb 2018    </h6>
+	<h4> Enter any number of samples in the input box and press the DFT button  </h4>
+	
+	 <p  id="mysamples" > </p>    
+	 
+	<button id="buttComputeDFT" onclick="myDFT()" >   Compute DFT   </button>
+	
+	<!-- <h4> Signal samples are   </h4>   !-->
+	
+	<p id="dispInputSamples">  </p>
+	 
+	
+	<!-- <h4> DFT Samples are computed as  </h4>   !-->
+	<p id ="aaDisp">   </p>
+	<p id ="bbDisp">   </p>
+	
+	<button id="buttComputeDFTAgain" onclick="myDFTAgain()" > DFT Again   </button>
+	
+	</body> 
+	
+	</html>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	</body>
+
+
+</html>

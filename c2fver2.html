@@ -1,0 +1,49 @@
+<html>
+<head>
+<title> C2F and F2C </title>
+<script>
+function c2f2c(arg1,arg2){
+//x=document.getElementById("c")
+//c=x.value
+//if above two lines are used then 
+// c2f() will not have any arguments
+if(arg2==1){
+
+c=arg1
+f=c*1.8+32
+document.getElementById("f").value=f
+document.getElementById("d").innerHTML="insidefunction"
+} // end of if(){}
+
+if(arg2==2){
+
+f=arg1
+c=(5/9)*(f-32)
+document.getElementById("c").value=c
+document.getElementById("d").innerHTML="insidefunction"
+
+}// end of if(){}
+
+
+
+}
+</script>
+
+</head>
+<body>
+<h1> C to F and F to C </h1>
+<h2> srbhide ... 18 Dec 2019 </h2>
+
+<p id="d"> Result</p>
+
+<input id="c" value=40 onchange="c2f2c(this.value,1)"> Enter Temp in C and Enter </input>
+<br><br><br>
+<input id="f" value=0  onchange="c2f2c(this.value,2)"> Enter Temp in F and Enter </input> 
+<br><br><br>
+
+
+
+
+
+</body>
+</html>

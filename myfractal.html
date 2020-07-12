@@ -1,0 +1,51 @@
+<html>
+<head>
+<title> My HTML </title>
+<script>
+s="abcdefgh"
+k=0
+nss=""
+nss1=""
+
+function myFractal(ss){
+	document.getElementById("d0").innerHTML="Received Argument : "+ ss.toString()
+	//k=k+1
+	//if (k >2) { return}
+
+	nss=ss.toString()
+
+	for(var i=0;i<nss.length;i++)
+	{
+		cc=nss.charAt(i)
+		document.getElementById("d1").innerHTML= document.getElementById("d1").innerHTML+"@@"+cc
+		if (cc=="1") { nss1=nss1.concat("21") ;document.getElementById("d2").innerHTML= nss1}
+		if (cc=="2") { nss1=nss1.concat("31");document.getElementById("d3").innerHTML= nss1 }
+		if (cc=="3") { nss1=nss1.concat("1") ;document.getElementById("d4").innerHTML= nss1}
+	}// end of for loop 
+	document.getElementById("d5").innerHTML='final transformed string is  '+ nss1
+	
+}// <><><><><><><>end of function
+</script>
+
+</head>
+<body>
+<h1> My Fractal Version 1</h1>
+<h2> srbhide ... 4 Dec 2020 </h2>
+<p id="d0"> </p>
+<p id="d1"> </p>
+<p id="d2"> </p>
+<p id="d3"> </p>
+<p id="d4"> </p>
+<p id="d4"> </p>
+<p id="d5"> </p>
+<button id="btn1" onclick="myFractal(123)"> Start</button>
+<br><br><br>
+
+<br><br><br>
+
+
+
+
+
+</body>
+</html>

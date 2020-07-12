@@ -1,0 +1,110 @@
+<html>
+<head>
+<title> My To Do App </title>
+<style>      </style>
+
+<script>
+       function myGlobal(){
+	          window.LB1=document.getElementById("b11")
+			  window.ULB1=document.getElementById("b13")
+			  x=document.getElementById("task1")
+		      y=document.getElementById("task2")					  
+			window.mycount=2						  
+	     }// This executes on loading of body
+
+
+	function delTask(n){
+		
+
+		if(n==1){x.value="";x.readOnly=false}
+		if(n==2){y.value="";y.readOnly=false}
+
+}//end of function delTask()
+
+	function myLock(m){
+		 document.getElementById("here").innerHTML="myLock() triggered"+m
+		
+		if(m==1)
+		{ 
+		  ULB1.style.backgroundColor='yellow'
+		  LB1.style.backgroundColor='red'
+		  x.style.backgroundColor='red'
+		  x.readOnly=true
+		  }
+		if(m==2){ y.readOnly=true}
+}//end of function mySave()
+
+	function unLock(m){
+		 
+		if(m==1){ 
+		                 ULB1.style.backgroundColor='red'
+						 LB1.style.backgroundColor='yellow'
+						 x.style.backgroundColor='yellow'
+						 x.readOnly=false
+						}
+		if(m==2){ y.readOnly=false}
+}//end of function mySave()
+
+	function addInput() {
+	    // following is new 
+	    mycount=mycount+1
+		var Btn1=document.createElement("button")
+		
+		// following is new
+		Btn1.addEventListener("click",myLock(mycount))
+		
+		Btn1.innerHTML="Lock"
+		Btn1.id="B1"
+		var Btn2=document.createElement("button")
+		Btn2.innerHTML="Delete"
+		Btn2.id="B2"
+		var Btn3=document.createElement("button")
+		Btn3.innerHTML="Unlock"
+		Btn3.id="B3"
+		var insertLine=document.createElement("div")
+		insertLine.innerHTML='<br>'
+		var freshInput = document.createElement("input");
+		freshInput.id="zzzz"
+		freshInput.size=60
+		freshInput.value = "This is a new task ";
+		refNode=document.querySelector("#createInput ")
+		refNode.before(freshInput)
+		freshInput.after(Btn1)
+		Btn1.after(Btn2)
+		Btn2.after(Btn3)
+		refNode.before(insertLine)
+  }// end of function 
+
+</script>
+
+</head>
+<body   onload=myGlobal();    >
+<h1> My To Do List App </h1>
+<h2> srbhide ... Last Modified on 10 Jun 2020</h2>
+<p id="here" >  </p>
+<input id="task1" value=Item#1  size="60"> </input> 
+<button id="b11" onclick="myLock(1)"> Lock</button>
+ <button id="b12" onclick="delTask(1)"> Delete</button> 
+ <button id="b13" onclick="unLock(1)"> Unlock</button> 
+<br><br>
+<input id="task2" value=Item#2 size="60">  </input> 
+<button id="b21"onclick="myLock(2)" > Lock</button> 
+<button id="b22" onclick="delTask(2)"> Delete</button> 
+<button id="b23" onclick="unLock(2)"> Unlock</button> 
+<br><br>
+<button id="createInput" onclick="addInput()"> Add One More Task</button> 
+</body>
+<style>
+body{background-color:lightYellow; font-size:25;}
+
+#task1{margin-left:80px;background-color:yellow;}
+#task2{margin-left:80px;background-color:yellow;}
+#createInput{margin-left:80px;}
+#zzzz{margin-left:80px;}
+h1,h2{text-align:center;}
+#B1{margin-left:8px;}
+#B2{margin-left:8px;}
+#B3{margin-left:8px;}
+</style>
+
+</html>

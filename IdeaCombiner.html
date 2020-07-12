@@ -1,0 +1,71 @@
+<html>
+<head>
+<title> Idea Combiner </title>
+
+<style>
+body {
+  background-color: lightblue;
+}
+
+h1,h2 {
+  color: Red;
+  text-align: center;
+  foreground-color:red;
+}
+
+p {
+  font-family: verdana;
+  font-size: 20px;
+}
+
+#id1{
+margin: 0 auto;
+display: block;
+border: 3px solid #73AD21;
+background-color:yellow;
+font-size:30px;
+}
+
+#dispIdea{
+text-align:center;
+border: 3px solid #73AD21;
+background-color:yellow;
+font-size:60px;
+
+}#b{
+background-color:red;
+font-size:30px;
+margin: 0 auto;
+display: block;
+}
+</style>
+
+<script>
+// ============ Store House of Ideas ==========================================================
+grp1=["drone","AI","ML","Nano","Blue Tooth","WiFi","Remote","Cloud Based"," Recycled","Edible "," Camera Embedded"]
+grp2=["mobile","News Paper","Hair Cut","Tooth Brush","Auto Rickshaw","Scooter","Lock","Clothes","Shoes","Pen","Pencil"]
+</script>
+
+<script>
+function CombIdeas(){
+m1=(grp1.length)-1
+m2=(grp2.length)-1
+n=Math.round(Math.random()*m1)
+idea1=grp1[n]
+n=Math.round(Math.random()*m2)
+idea2=grp2[n]
+idea=idea1+'    based  '  + idea2
+document.getElementById("dispIdea").innerHTML=idea
+}
+</script>
+
+</head>
+<body>
+<h1> Idea Combinator </h1>
+<h2> srbhide ... 19 Dec 2019 </h2>
+<div id="dispIdea"> Idea </div>
+<br><br><br>
+<button  id="b" onclick="CombIdeas()">   Generate Idea </button>
+<br><br><br>
+</body>
+</html>

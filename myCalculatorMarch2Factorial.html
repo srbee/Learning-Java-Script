@@ -1,0 +1,345 @@
+<html>
+<head>
+<title> myCalculator </title>
+<style>
+#myDisplay {
+    border: 1px solid red;
+	outline-style: solid green;
+}
+
+#kbd {
+    border: 2px solid red;
+	outline-style: solid green;
+	width:80%;
+	background-color: beige;
+     }
+
+</style>
+
+
+
+<script>
+var buffer=0;
+var display ,b;
+var mirrorDisplay; // for evaluation purposes
+var sqrFlag      =0; // 1 indicates Square button pressed
+var InverseFlag1 =0; // 1 1cIndicates degrees mode
+var InverseFlag2 =0; // 1 Indicates inverse mode
+var factFlag     =0; // 1 Indicates factorial key is pressed
+
+function shriGanesh() 
+{
+   
+   display       = document.getElementById("myDisplay");
+   display.value ='  ';
+   display.style.backgroundColor = "yellow";
+   mirrorDisplay = display.value;
+   
+   qq=document.getElementById('Deg');	
+   qq.style.backgroundColor="red" 
+   
+   
+   
+   
+   
+   
+   Math.sind=function(x){
+               return Math.sin((x*Math.PI)/180);
+                        }
+						
+   Math.cosd=function(x){
+               return Math.cos((x*Math.PI)/180);
+                        }
+						
+   Math.tand=function(x){
+               return Math.tan((x*Math.PI)/180);
+                        }	
+						
+   
+
+						
+	document.getElementById('myMess').innerHTML='Angles are in  '+document.getElementById('Deg').innerHTML;						
+}// ENd of ShriGanesh()
+
+function  myKeyHandler(n)
+{
+   
+   switch(n){
+   case '!': 
+             factFlag=1; // ! is not passed to mirrorDisplay which passed to eval()
+             display.value   = display.value + n;
+			 break;
+   
+   default:
+             display.value=display.value + n;
+             mirrorDisplay=mirrorDisplay + n ; 	
+   
+            }// end of switch case 
+   
+   
+}//end of function myKeyHandler()
+
+
+function myTrigHandler(x)
+{
+    if (x=='sin') 
+   { 
+      x='sin(';
+	  display.value=display.value + x;
+	  if( document.getElementById('Deg').innerHTML=='Degrees') 
+	  
+	  {
+	    document.getElementById('myMess').innerHTML='Angles in degrees';
+	    mirrorDisplay=mirrorDisplay+'Math.sind(' ; 
+	  
+	  }
+	  else {
+            document.getElementById('myMess').innerHTML='Angles in radians';
+	        mirrorDisplay=mirrorDisplay+'Math.sin(' ;
+			}
+	  
+    }// end of sine 
+	
+	if (x=='cos') 
+   { 
+      x='cos(';
+	  display.value=display.value + x;
+	  if( document.getElementById('Deg').innerHTML=='Degrees') 
+	  
+	  {
+	    document.getElementById('myMess').innerHTML='Angles in degrees';
+	    mirrorDisplay=mirrorDisplay+'Math.cosd(' ; 
+	  
+	  }
+	  else {
+            document.getElementById('myMess').innerHTML='Angles in radians';
+	        mirrorDisplay=mirrorDisplay+'Math.cos(' ;
+			}
+	  
+    }// end of cosine
+	
+	if (x=='tan') 
+   { 
+      x='tan(';
+	  display.value=display.value + x;
+	  if( document.getElementById('Deg').innerHTML=='Degrees') 
+	  
+	  {
+	    document.getElementById('myMess').innerHTML='Angles in degrees';
+	    mirrorDisplay=mirrorDisplay+'Math.tand(' ; 
+	  
+	  }
+	  else {
+            document.getElementById('myMess').innerHTML='Angles in radians';
+	        mirrorDisplay=mirrorDisplay+'Math.tan(' ;
+			}
+	  
+    }// end of tangent
+	
+	if (x=='asin') 
+   { 
+     InverseFlag2=1;
+      x='asin(';
+	  display.value=display.value + x;
+	  if( document.getElementById('Deg').innerHTML=='Degrees') {
+	    document.getElementById('myMess').innerHTML='Angles in degrees';  
+	   } else {document.getElementById('myMess').innerHTML='Angles in radians';	}  
+	 mirrorDisplay=mirrorDisplay+'Math.asin(' ; 
+    }// end of asin  (sine-inverse)
+	
+	if (x=='acos') 
+   { 
+     InverseFlag2=1;
+      x='acos(';
+	  display.value=display.value + x;
+	  if( document.getElementById('Deg').innerHTML=='Degrees') {
+	    document.getElementById('myMess').innerHTML='Angles in degrees';  
+	   } else {document.getElementById('myMess').innerHTML='Angles in radians';	}  
+	 mirrorDisplay=mirrorDisplay+'Math.acos(' ; 
+    }// end of acos  (cosine-inverse)
+	
+	if (x=='atan') 
+   { 
+     InverseFlag2=1;
+      x='atan(';
+	  display.value=display.value + x;
+	  if( document.getElementById('Deg').innerHTML=='Degrees') {
+	    document.getElementById('myMess').innerHTML='Angles in degrees';  
+	   } else {document.getElementById('myMess').innerHTML='Angles in radians';	}  
+	 mirrorDisplay=mirrorDisplay+'Math.atan(' ; 
+    }// end of atan (tan-inverse)
+}// End of function myTrighandler(x)
+
+
+ function eqKeyClicked() //Linked with = button click event
+{
+
+ if (sqrFlag==1) {
+                     mirrorDisplay=buffer*buffer;
+					 
+					 sqrFlag=0;}
+ 
+ 
+ 
+ if (factFlag==1) {  
+    if ((mirrorDisplay.indexOf('.') > -1 )||(mirrorDisplay.indexOf('-') > -1)) { display.value='Factorial is defined for positive integers only !'; return}
+	else {
+	       display.value=display.value+' = '+ myFact(mirrorDisplay);
+	       factFlag = 0;
+	       return;
+		}
+	} // New entry
+
+
+ if( document.getElementById('Deg').innerHTML=='Degrees') {InverseFlag1=1;}
+
+ // both flags will be 1 if degrees mode is on and any of inverse trig key pressed
+ // =====================================================
+ // alert('mirrorDisplay=  '+ mirrorDisplay );
+ 
+ b=eval(mirrorDisplay); // <===== Heart of the calculator 
+ // =====================================================
+ if ((InverseFlag1 ==1) && (InverseFlag2==1) ) { (b=b*(180/Math.PI)); }
+ display.value=display.value+' = '+ b;
+ //alert('Degree Flag  =  '+InverseFlag1+' Inverse Function Flag =    '+ InverseFlag2);
+ 
+ InverseFlag1=0;InverseFlag2=0;
+ 
+}//End of function eqKeyClicked()
+// New Function
+
+function myFact(m){
+    if((m==1)||( m==0) ) { return 1;}
+   else{return (m*myFact(m-1));}
+} // End of function myFact()
+
+
+ function myAllClear()
+ {
+  display.value='  ';
+  mirrorDisplay=display.value;
+ } // End of function myAllClear()
+
+function myToggleDeg()
+{
+ d=document.getElementById('Deg').innerHTML;
+ qq=document.getElementById('Deg');	
+ if (d=='Degrees'){ 
+                    document.getElementById('Deg').innerHTML='Radians';
+					qq.style.backgroundColor="red" ;
+				  }
+     else {document.getElementById('Deg').innerHTML='Degrees';
+	       qq.style.backgroundColor="yellow";
+	      }
+	 
+     document.getElementById('myMess').innerHTML='Angles are in  '+ document.getElementById('Deg').innerHTML;
+} // End of myToggleDeg()
+
+function delKeyClick(){
+display.value='This feature is under development. Stay tuned!';
+}// End of function delKeyClick()
+
+
+function mySquare(){
+                      sqrFlag=1;
+					  buffer=display.value;
+					  display.value=display.value+'^2';
+					  //display.value=display.value+ &#178 ;
+					  // Was trying to display superscript
+					  
+
+//display.value=display.value;
+
+                   }// End of function mySquare()
+
+
+
+</script>
+
+
+
+
+
+
+</head>
+<body onload='shriGanesh()'>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+ <div id='kbd'    >
+<h1>  Kasa Basa Calci </h>
+<h6> S R Bhide /28 Feb. 2018/  </h6>
+<h6> To Do : Add PI button , Square , SQRT etc </h6> 
+
+<input id='myDisplay' value="" readonly='true' size='25' >  </input> 
+<button id='myMess'> </button> 
+<hr>
+
+Toggle ==><button id='Deg' onclick="myToggleDeg()" > Radians </button><br/> 
+
+<button id='sin'  onclick="myTrigHandler('sin')"  >  &nbsp&nbspsin() </button>  
+<button id='cos'  onclick="myTrigHandler('cos')"  >  &nbsp&nbspcos() </button>
+<button id='tan'  onclick="myTrigHandler('tan')"  >  &nbsp&nbsptan() </button> <br/>
+<button id='asin' onclick="myTrigHandler('asin')" >  asin() </button> 
+<button id='acos' onclick="myTrigHandler('acos')" >  acos() </button> 
+<button id='atan' onclick="myTrigHandler('atan')" >  atan() </button> 
+
+<br/>
+
+
+
+<br/>
+<button id='(' onclick="myKeyHandler('(')" > ( </button>
+<button id=')' onclick="myKeyHandler(')')" > ) </button>
+<br/> 
+<button id='fact' onclick="myKeyHandler('!')">  &nbsp&nbsp&nbsp!</button> 
+<button id='sqr'  onclick="mySquare()">&nbsp&nbsp&nbsp x<sup>2</sup></button> 
+<br/>
+
+
+<input type="button" id='key7' value="7" onclick="myKeyHandler(this.value)" > </input> 
+<input type="button" id='key8' value="8" onclick="myKeyHandler(this.value)" > </input>
+<input type="button" id='key9' value="9" onclick="myKeyHandler(this.value)" > </input>
+&nbsp &nbsp &nbsp
+<button id='key9' onclick="delKeyClick()">DEL</button> 
+<button id='key9' onclick="myAllClear()">AC</button> 
+&nbsp &nbsp &nbsp
+<br/><br/>
+<button id='key4' onclick="myKeyHandler('4')">4</button> 
+<button id='key5' onclick="myKeyHandler('5')">5</button> 
+<button id='key6' onclick="myKeyHandler('6')">6</button>
+&nbsp &nbsp &nbsp
+<button id='keyMUL' onclick="myKeyHandler('*')">  X  </button> 
+<button id='keyDIV' onclick="myKeyHandler('/')">  /  </button> 
+<br/> <br/>
+<button id='key1' onclick="myKeyHandler('1')">1</button> 
+<button id='key2' onclick="myKeyHandler('2')">2</button> 
+<button id='key3' onclick="myKeyHandler('3')">3</button>
+&nbsp &nbsp &nbsp
+<button id='keyADD' onclick="myKeyHandler('+')">  +  </button> 
+<button id='keyDIV' onclick="myKeyHandler('-')">  - </button> 
+<br/> <br/>
+<button id='key0' onclick="myKeyHandler('0')">0</button> 
+<button id='keydp' onclick="myKeyHandler('.')">.</button> 
+<button id='key10powX' onclick=""             > 10^x</button>
+
+<button id='keyADD' onclick=""        >  Ans </button> 
+<button id='key=' onclick="eqKeyClicked()">   =   </button> 
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
