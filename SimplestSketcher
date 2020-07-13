@@ -1,35 +1,32 @@
 <! DOCTYPE html>
 <html>
-<!-- This is a template for p5.js files-->
-<!-- Remember to save under another name , so that template remains available for new projects-->
-
+ 
 <head>
+<!-- Download to p5.js from Content Delivery Network cdn.jsdeliver -->
     <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
- </head>
+</head>
  
  
  <body>
- <!-- paste the ontents of your sketch.js file here  -->
- <!--surround all functions with <script> </script> tags -->
+  
 <script>
-function setup(){
-w=displayWidth;h=displayHeight
-createCanvas(w,h)
-background('yellow')
-stroke('green')
-fill('green')
 
-}
+   function setup(){
+     w=displayWidth;h=displayHeight
+     createCanvas(w,h)
+     background('yellow')
+     stroke('green')
+     fill('green')
+   }// end of function setup()
 
-function draw(){
+   function draw(){
+     //background('green')
+   }//end of function draw()
  
- //background('green')
- }
- 
- function touchMoved(){
- 
- circle(mouseX,mouseY,5)
- }
+   function touchMoved(){
+      circle(mouseX,mouseY,5)
+   }//end of function touchMoved()
+   
  </script>
  
  
