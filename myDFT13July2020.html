@@ -78,12 +78,11 @@
    } // end of function myHandler()
    
    function dispDFT() {
-                                  for(k=0;k<N;k++){
-								               Xcos[k]=Math.round(Xcos[k]*1000)/1000;
-											   Xsin[k]=Math.round(Xsin[k]*1000)/1000;
-                                               p2.innerHTML= p2.innerHTML+Xcos[k]+' +j'+Xsin[k]                  +'__________';
-	 
-	                                          p3.innerHTML= p3.innerHTML+Math.round(Xmag[k]*1000)/1000+'_________'
+            for(k=0;k<N;k++){
+                  Xcos[k]=Math.round(Xcos[k]*1000)/1000;
+		  Xsin[k]=Math.round(Xsin[k]*1000)/1000;
+                  p2.innerHTML= p2.innerHTML+Xcos[k]+' +j'+Xsin[k] +'__________';
+	          p3.innerHTML= p3.innerHTML+Math.round(Xmag[k]*1000)/1000+'_________'
    }// end of for loop
    }//end of function dispDFT()
     
