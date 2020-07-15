@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>P5.js Example</title>
+	
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.js"></script>
+	
+    <script>
+	// The following is a pure JS function
+      function updateLabels(x, y){
+        var xLabel = document.getElementById('x-label');
+        xLabel.innerHTML = 'X: ' + x;
+        circle(100,mouseY,mouseX/100)
+        var yLabel = document.getElementById('y-label');
+        yLabel.innerHTML = 'Y: ' + y;
+      }
+    </script>
+		
+	<script>
+		function setup(){
+			var canvas = createCanvas(displayWidth*0.8, displayHeight*.8);
+			background('yellow')
+	       canvas.parent('sketch-div');
+		}
+		
+		function draw(){
+	       //background(32);
+			fill(255);
+			line(pmouseX,pmouseY,mouseX,mouseY)
+	        updateLabels(mouseX, mouseY);//calling a pure JS function from p5.js draw() function
+		}
+	</script>
+	
+	</head>
+	<body>
+    <div id="sketch-div"></div>
+    <p id="x-label"></p>
+    <p id="y-label"></p>
+	</body>
+</html>
