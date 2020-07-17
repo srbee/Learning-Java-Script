@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>P5.js Example</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>
+	<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/837599/p5.speech.js"></script>
+	<script>
+		var speech = new p5.Speech();
+
+		function setup(){
+			createCanvas(200, 200);
+			background(32);
+			fill(255);
+			textSize(36);
+			textAlign(CENTER);
+			text('Click here!', width/2, height/2);
+		}
+
+		function mouseClicked(){
+			speech.speak('Hello World , this is my first text to speech in p5 dot js!');
+			text(speech.voices,20,20)
+		}
+	</script>
+</head>
+<body>
+</body>
+</html>
