@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+ function myHandler(msg){
+ x=document.getElementById("myChoice")
+ x.innerHTML="Your Choice= "+msg;
+}
+</script>
+
+</head>
+
+<body>
+
+<div>
+<input type="radio" name="c" onclick="myHandler(this.value)" value="DFT in complex form"> Complex DFT<br>
+<input type="radio" name="c" onclick="myHandler(this.value)" value="DFT in polar form"    > Polar DFT<br>
+<br>
+<p id="myChoice" > Your Choice  </p>
+</div>
+
+</body>
+</html>

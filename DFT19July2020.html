@@ -26,6 +26,7 @@
                 canvas.parent('sketch-div');
                background(32);
 			   strokeWeight(2)
+		 
 			}
 			
 			function draw(){
@@ -33,11 +34,16 @@
 			 background('yellow')
 			fill(255);
 			stroke('red')
-		 
-	
-		
-			for(k=0;k<N;k=k+1)
-			{
+			push();stroke('green');textSize(20);
+			
+		     text('Signal',0.01*width,0.1*height);pop()
+			 push();stroke('red');textSize(20);
+			 text('DFT Mgtd',0.1*width,0.37*height);pop()
+			 push();stroke('blue');textSize(20);
+			 text('DFT Ph',0.1*width,0.69*height);pop()
+			 
+		 for(k=0;k<N;k=k+1){
+			
 			   
 			 
 			   line(0,height/5,width,height/5)//signal base line
@@ -47,7 +53,7 @@
 			   line(50+k*100,  height/5,  50+k*100,  height/5-xx[k]  );//plot normalized, scaled signal
 			   text(x[k],50+k*100,      height/5-xx[k]  )//signal value 
 			   pop()
-			   
+			
 			   line(0,1.7*height/3,width,1.7*height/3)// DFT-Mgtd base line
 	           line( 50+k*100,   1.7*height/3,   50+ k*100,   (1.7*height/3)-XXmag[k])//DFT Mgtd scaled
 			   text( Xmag[k]  ,   50+ k*100,   (1.7*height/3)-XXmag[k]  )
@@ -62,14 +68,15 @@
 			
    
    function mySetColor(){
+     
        var inputVal = document.getElementById("mysamples");
        inputVal.style.backgroundColor = "yellow";  
        document.getElementById("buttComputeDFT").style.backgroundColor='OrangeRed';
-	  document.getElementById("adjust").style.backgroundColor='yellow';
+	  //document.getElementById("adjust").style.backgroundColor='yellow';
    }// End of function mySetColor()
    
    function myDFT()  {
-        console.log('inside myDFT adjusted=  '+adjusted)
+         
         var a = document.getElementById("mysamples").value ;
 	    document.getElementById("mysamples").disabled=false;
 	   var b =a.split(',');
@@ -93,6 +100,7 @@
  } // end of outer for loop of DFT calculation
    
 	 dispDFT();
+	
    } // end of function myHandler()
    
    function dispDFT() {
@@ -135,29 +143,17 @@
 			//=========End of Normalize x[],Xmag[] ======================
 	}//end of function dispDFT()
     
-function myAdjust(){
-	   //console.log('inside myAdjust');
-	   //console.log(adjusted)
-	   mybutt=document.getElementById("adjust")
-	   
-	    if (adjusted==0){ 
-		   mybutt.style.backgroundColor='red'
-	       document.getElementById("adjust").innerHTML='DFT adjusted for 1/N and 2/N'
-	       adjusted=1;
-		  dc_adj=1/N,ac_adj=2/N;
-	      return 
-	   }
+ 
 	
-	   if (adjusted==1){ 
-	   mybutt.style.backgroundColor='yellow'
-	   document.getElementById("adjust").innerHTML='pure DFT'
-	   adjusted=0;
-	   dc_adj=1,ac_adj=1;
-	   return 
-	   }
+	function myOut(ch){
+	   if (ch=="1"){ dc_adj=1,ac_adj=1;}
+	   if(ch=="2") {dc_adj=1/N,ac_adj=2/N;}
+	}//end of function myOut()
+	
+	 
 	
 	
-	}//end of function myAdjust()
+	
 	
 </script>
 	</head>
@@ -169,7 +165,12 @@ function myAdjust(){
 	 <br>
 	 <p> </p>
 	 <button id="buttComputeDFT" onclick="myDFT()" >   Compute DFT   </button>
+	 <!--
 	 <button id="adjust" onclick="myAdjust()">Pure DFT </button>
+	-->
+
+	<input type="radio" name="c" onclick="myOut(this.value)" value="1"  checked> Pure DFT 
+	<input type="radio" name="c" onclick="myOut(this.value)" value="2" > DFT adjusted by 1/N and 2/N 
 	
 	  
 	</body>
