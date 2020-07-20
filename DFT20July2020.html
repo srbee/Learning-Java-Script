@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>P5.js Example</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>
+		<script>
+	//============ Initialization =========================	
+		var x=[],Xcos=[],Xsin=[],Xmag=[],Xph=[];
+        var N; var aa,bb,k;
+        var p1,p2,p3;
+        var zzz = 19.999999;
+		var xmaxx,Xmag_max,Xph_max
+		var x=[], xx=[],XXmag=[];XXph=[];
+		var mySF1=80
+		var adjusted=0
+		var dc_adj=1
+		var ac_adj=1
+	//===============================================	
+			function setup(){
+			    var dW=displayWidth; var dH=displayHeight
+				
+				dW=dW;dH=0.6*dH
+				height=dH;width=dW;
+				var canvas = createCanvas(dW, dH);
+                canvas.parent('sketch-div');
+               background(32);
+			   strokeWeight(2)
+		 
+			}
+			
+			function draw(){
+	 
+			 background('yellow')
+			fill(255);
+			stroke('red')
+			push();stroke('green');textSize(20);
+			
+		     text('Signal',0.01*width,0.1*height);pop()
+			 push();stroke('red');textSize(20);
+			 text('DFT Mgtd',0.1*width,0.37*height);pop()
+			 push();stroke('blue');textSize(20);
+			 text('DFT Ph',0.1*width,0.69*height);pop()
+			 
+		 for(k=0;k<N;k=k+1){
+			
+			   
+			 
+			   line(0,height/5,width,height/5)//signal base line
+			   push();strokeWeight(4);
+			   
+			   stroke('green');
+			   line(50+k*100,  height/5,  50+k*100,  height/5-xx[k]  );//plot normalized, scaled signal
+			   text(x[k],50+k*100,      height/5-xx[k]  )//signal value 
+			   pop()
+			
+			   line(0,1.7*height/3,width,1.7*height/3)// DFT-Mgtd base line
+	           line( 50+k*100,   1.7*height/3,   50+ k*100,   (1.7*height/3)-XXmag[k])//DFT Mgtd scaled
+			   text( Xmag[k]  ,   50+ k*100,   (1.7*height/3)-XXmag[k]  )
+			   push();stroke('blue')
+			   line(0,2.4*height/3,width,2.4*height/3)// DFT-ph base line
+		       line( 50+k*100,   2.4*height/3,   50+ k*100,   (2.4*height/3)-(XXph[k]))//DFT ph
+			   text((Xph[k]),50+k*100, (2.4*height/3)-(XXph[k]       ))//DFT phase in degrees
+			   pop()
+			   }//end of for loop
+			
+		 }// end of function draw()
+			
+   
+   function mySetColor(){
+     
+       var inputVal = document.getElementById("mysamples");
+       inputVal.style.backgroundColor = "yellow";  
+       document.getElementById("buttComputeDFT").style.backgroundColor='OrangeRed';
+	   document.getElementById("mysamples").value ="0,50,86.6,100,86.6,50,0,-50,-86.6,-100,-86.6,-50"
+	   myDFT();
+	
+	  //document.getElementById("adjust").style.backgroundColor='yellow';
+   }// End of function mySetColor()
+   
+   function myDFT()  {
+         
+        var a = document.getElementById("mysamples").value ;
+	    document.getElementById("mysamples").disabled=false;
+	   var b =a.split(',');
+	    x =b.map(Number);
+	     var n,m ;
+   N = x.length;
+   // initialize all dfts to zero
+   
+   for (m=0;m<N;m++) {Xcos[m]=0;Xsin[m]=0;Xmag[m]=0;Xph[m]=0;}// end of for loop initializing matrix variables
+  //=============================================== 
+   for (m=0;m<N;m++){
+     for (n=0; n<N; n++){
+	  Xcos[m]=Xcos[m]+x[n]*Math.cos((2*(Math.PI)*m*n)/(N));
+	  Xsin[m]=Xsin[m]-x[n]*Math.sin((2*(Math.PI)*m*n)/(N));
+	  //minus sign because of exp(-2*pi*m*n /N)=cos(..)-j*sin(..) 
+	 } // end of inner for loop
+	 
+	  Xmag[m]=Math.sqrt(Xcos[m]*Xcos[m]+Xsin[m]*Xsin[m]);
+	  Xph[m]=Math.atan2(Xsin[m],Xcos[m]);
+	  
+ } // end of outer for loop of DFT calculation
+   
+	 dispDFT();
+	
+   } // end of function myHandler()
+   
+   function dispDFT() {
+         for(k=0;k<N;k++){
+	        Xcos[k]=Math.round(Xcos[k]*1000)/1000;
+			Xsin[k]=Math.round(Xsin[k]*1000)/1000;
+    }// end of for loop
+   
+    // Adjustment for 1/N and 2/N factors for DC and rest of the terms
+	//dc_adj=1/N;ac_adj=2/N
+	//dc_adj=1;ac_adj=1
+	for(k=0;k<N;k++){
+	  if(k==0){Xmag[k]=(dc_adj)*Xmag[k]}else{Xmag[k]=(ac_adj)*Xmag[k]}
+	}//end of for loop
+	// End Adjustment for 1/N and 2/N factors for DC and rest of the terms
+   
+   //========Normalize x[] ,Xmag[] ==============
+			xmaxx=x[0]
+			Xmag_max=Xmag[0]
+			Xph_max=Xph[0]
+			
+			// Finding out maximum of signal[k], Xmag[k] and Xph[k]
+			 for(k=1;k<N;k++){
+			  if( x[k]         > xmaxx)               { xmaxx= x[k]} //end of if
+			  if( Xmag[k] > Xmag_max)        { Xmag_max= Xmag[k]} //end of if
+			  if( Xph[k] > Xph_max)        { Xph_max= Xph[k]} //end of if
+			  // add code here for finding maximum of phase angles//
+			  
+			  }//end of for loop
+			
+        // Normalizing and Scaling of values so that maximum value goes full scale			
+			for(k=0;k<N;k++){ 
+			    xx[k]=(x[k]/xmaxx)*mySF1;
+			    XXmag[k]=(Xmag[k]/Xmag_max)*mySF1;
+				XXph[k]=(Xph[k]/Xph_max)*mySF1*0.55;//Changed Scale factor for phase as 180 deg is going out of scale
+			    Xph[k]=round(degrees(Xph[k])*100)/100//converted from radians to degrees
+				Xmag[k]=round((Xmag[k])*100)/100// 
+				Xph[k]=round((Xph[k])*100)/100//converted from radians to degrees
+			}//end of for loop
+			//=========End of Normalize x[],Xmag[] ======================
+	}//end of function dispDFT()
+    
+ 
+	
+	function myOut(ch){
+	   if (ch=="1"){ dc_adj=1,ac_adj=1;}
+	   if(ch=="2") {dc_adj=1/N,ac_adj=2/N;}
+	}//end of function myOut()
+	
+	 
+	
+	
+	
+	
+</script>
+	</head>
+	
+	 <body onload="mySetColor()">
+	  <div id="sketch-div"></div>
+	 <h2 > Enter any number of samples, separated by comma, in the input box below and clickthe "Compute DFT" button  </h2>
+	 <input id="mysamples"  placeholder='1,2,3,4'> </input>    
+	 <br>
+	 <p> </p>
+	 <button id="buttComputeDFT" onclick="myDFT()" >   Compute DFT   </button>
+	 <!--
+	 <button id="adjust" onclick="myAdjust()">Pure DFT </button>
+	-->
+
+	<input type="radio" name="c" onclick="myOut(this.value)" value="1"  checked> Pure DFT 
+	<input type="radio" name="c" onclick="myOut(this.value)" value="2" > DFT adjusted by 1/N and 2/N 
+	
+	  
+	</body>
+</html>
+
+ 
