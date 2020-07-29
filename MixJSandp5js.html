@@ -18,9 +18,12 @@
 		
 	<script>
 		function setup(){
-			var canvas = createCanvas(displayWidth*0.8, displayHeight*.8);
+			var canvas1 = createCanvas(displayWidth*0.1, displayHeight*.1);
 			background('yellow')
-	       canvas.parent('sketch-div');
+	        canvas1.parent('sketch-div1');
+			
+			 
+			
 		}
 		
 		function draw(){
@@ -28,13 +31,15 @@
 			fill(255);
 			line(pmouseX,pmouseY,mouseX,mouseY)
 	        updateLabels(mouseX, mouseY);//calling a pure JS function from p5.js draw() function
+			
 		}
 	</script>
 	
 	</head>
 	<body>
-    <div id="sketch-div"></div>
+    <div id="sketch-div1"></div>
     <p id="x-label"></p>
     <p id="y-label"></p>
+	
 	</body>
 </html>

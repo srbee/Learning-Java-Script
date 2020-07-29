@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
+	<meta charset="utf-8">
+    <script>
+	// All the sketch 
+	function setup() {
+      createCanvas(1000,800);
+     backgnd = 'yellow'
+     foregnd = 'green'
+     var x = [0]
+     Xcos = [];sig=[]
+     Xsin = [];
+     Xmag = []; pXmag=[];XXmag=[];
+  
+     Xph = [] ;pXph=[];XXph=[]
+     pmY=[];sig=[]
+     xx = []; // xposition holder
+     eps = 10; // tolerance
+     N=21
+     horiz_spacing=15
+     xs=-width/2.1;ys=-height/4
+     //xs=0;ys=0
+     angleMode(DEGREES)
+     background(backgnd)
+     initSig()
+     mY=0
+     mx=0
+     dmag=380//DFT mag base line y cood
+     dph=dmag+100
+}
+
+function draw() {
+  translate(width/2, height/2)
+  //background('yellow')
+  title()
+  dispSig()
+  myDFT(sig)
+  myRefresh()
+  //print('Xmag= ' + Xmag)
+  //print('mousePressed='+mouseIsPressed)
+  }//end of compulsory function draw()
+
+function dispSig() {
+
+ //if(mouseIsPressed){
+  if(1){ 
+  mY = (mouseY - (height / 2))
+ //print('mY='+mY)
+  if (mY < -340) {
+    mY = -340
+  } //restrict height within graph
+  if (mY > -62) {
+    mY = -62
+  } // restrict height within graph
+
+  mx = mouseX - width / 2;
+  
+}//end of if 
+
+  
+  //plotting the signal and DFT
+  for (i = 0; i < N; i++) {
+	xx[i] = xs + i * horiz_spacing // hori spacing
+    ellipse(xx[i], ys, 5)// place markers on base line
+    line(xx[i], ys, xx[i], ys - 140) 
+    //vert lines up
+    line(xx[i], ys, xx[i], ys + 140) 
+    //vert lines down
+   if(i <8) {
+    line(xs, ys  - 20 * i, xs +( N-1) * (horiz_spacing) , ys - 20 *  i) 
+    //horiz lines up
+    line(xs, ys + 20 * i, xs + (N -1)* (horiz_spacing), ys + 20 * i)
+    //horiz lines dn
+    // i don't want a square grid. So horizontal lines are 8 only.
+	// there is a vertical line for every sample point
+	}//end of if
+	
+	line(xs, ys +dmag , xs +(N-1)*horiz_spacing, ys +dmag ) 
+    //DFT mag base hori line
+    text('DFT Magnitude ',xs+150,ys+dmag+20)
+	ellipse(xx[i], ys+dmag, 5)//place markers on DFT mag base line
+    
+    line(xs, ys +dph , xs +(N-1)*horiz_spacing, ys +dph ) 
+    //DFT ph base hori line
+    text('DFT Phase ',xs+150,ys+dph+80)
+	ellipse(xx[i], ys+dph, 5)//place markers on DFT ph base line
+    
+    
+	push()
+	strokeWeight(8); //did the trick!
+	stroke(backgnd)
+	line(xx[i],ys+dmag,xx[i],ys+dmag-pXmag[i])
+    //plot phase
+    line(xx[i],ys+dph,xx[i],ys+dph-pXph[i])
+	pop()
+	pXmag[i]=Xmag[i]
+    pXph[i]=XXph[i]
+    
+	push();strokeWeight(7);stroke('red')
+	line(xx[i],ys+dmag,xx[i],ys+dmag-Xmag[i])
+    //plot phase
+    line(xx[i],ys+dph,xx[i],ys+dph-XXph[i])
+	pop()
+  }; //end of loop some plotting
+  for (i = 0; i < N; i++) {
+    dx = abs(xx[i] - mx)
+
+    if (dx < eps) {
+
+      ellipse(xx[i], ys, 10);
+      push()
+      strokeWeight(9); //did the trick!
+      stroke(backgnd)
+      push();
+      fill('yellow')
+      textSize(22)
+      text('Signal = '+sig,xs,-30)
+      text('DFT mag = '+XXmag,xs,0)
+      text('DFT phase = '+Xph,xs,30)
+      pop();line(xx[i], ys, xx[i], pmY[i]) //signal bar
+      pop();push();stroke(foregnd);strokeWeight(4)
+      line(xx[i], ys, xx[i], mY) //signal bar
+    push();stroke('red');fill('yellow');textSize(18)
+      text('Signal = '+sig,xs,-30)
+      text('DFT mag = '+XXmag,xs,0)
+      text('DFT phase = '+Xph,xs,30)
+      pop()
+      pop()
+      pmY[i] = mY; // y decreses upwords !
+      sig[i] = -(mY - ys);
+	  sig[i]=map(sig[i],-138,139,-100,100,1)
+	  sig[i]=round(sig[i])
+    }; // end of if block
+  }; //end of for loop
+
+}; //end of function dispSig()
+
+function initDFT() {
+  for (i = 0; i < N; i++) {
+    Xcos[i] = 0;
+    Xsin[i] = 0;
+    Xmag[i] = 0;
+  }; // end of for loop
+}//end of function initDFT()
+
+function initSig() {
+  for (i = 0; i < N; i++) {
+    sig[i] = 0;
+    
+  }; // end of for loop
+}//end of function initSig()
+
+
+
+function myDFT(signal){
+  //print('signal= '+signal)
+  initDFT()
+
+  for (m = 0; m < N; m++) {
+    for (n = 0; n < N; n++) {
+      //print(n,signal[n])
+      // angleMode(DEGREES) therefore argument of trigometric
+      // functions is interpreted to be in degrees
+      Xcos[m] = Xcos[m] + signal[n] * cos(degrees(2 * PI * m * n) / N);
+      Xsin[m] = Xsin[m] - signal[n] * sin(degrees(2 * PI * m * n / N));
+      //
+    }; // end of inner for loop
+    Xmag[m] = sqrt(Xcos[m] ** 2 + Xsin[m] ** 2)
+    Xph[m] = round(atan2(Xsin[m], Xcos[m]))
+    XXmag[m]=round(Xmag[m])//actual dft mag
+	Xmag[m]=map(Xmag[m],0,787,0,160,1)//mapped dft mag
+    
+    XXph[m]=map(Xph[m],-180,180,-50,50,1) // may not require mapping
+    
+  }; // end of outer for loop
+//print('Xmag= '+Xmag)
+}; //end of funciton dft()
+
+function title(){
+   push();stroke('red')
+   textSize(20)
+   text('Sketch signal by moving mouse over the graph',-390,-360)
+   //text('and moving the mouse over the graph to see DFT',-300,-20)
+   //text(' See DFT',-100,80)
+   pop()
+  }//end of function title
+
+function myRefresh(){
+for (i = 0; i < N; i++) {
+  line(xx[i], ys, xx[i], ys-sig[i]) //signal bar
+}//end of for loop
+
+}//end of function myRefresh()
+
+</script>
+</head>
+  <body>
+   </body>
+</html>
