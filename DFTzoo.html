@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js"></script>
+   <meta charset="utf-8" />
+<script>
+
+//=================================
+// DFT Zoo : srbhide July-Aug. 2020
+//=================================
+//'''''''''''''''''''''''''''''''''''''''''''''''''''
+// This program creates various typical time domain signals
+// and plots their frequency spectra using DFT
+//'''''''''''''''''''''''''''''''''''''''''''''''''''
+function setup() {
+  count=0
+  createCanvas(900, 800);
+  var samples
+  background('khaki')
+  stroke('red')
+  angleMode(DEGREES)
+  //mySlider()
+  myRadio()
+  x=[]
+  Xcos=[];Xsin=[];Xmag=[];Xph=[]
+  Xcmag=[];//centered version of DFT DC at centre
+  Xcph=[];//centered version of DFT ph with DC at centre
+  //positive freq on right and negative freq on left
+  k=-1
+  A=100
+  h=1;//harmonic
+  f=50
+  var N
+  code=1
+  xpa=300
+}// end of function setup()
+function draw() {
+  translate(width/2,height/2)
+  init()
+  createSig(code)
+  dft()
+  centerDFT()
+  dispSig()
+  dispDFT()
+}//end of function draw()
+function myRadio(){
+  radio = createRadio();
+  radio.option(1,'Sinc')
+  radio.option(2,'Pulse',)
+  radio.option(3,'Sine')
+  radio.option(4,'Cosine')
+  radio.option(5,'Ramp')
+  radio.option(6,'Impulse')
+  radio.option(7,'DC',7)
+  radio.option(8,'Triangle')
+  radio.option(9,'FWRectified')
+  radio.option(10,'HWRectified')
+  radio.option(11,'Hamming ')
+  radio.option(12,'Hanning ')
+  radio.option(13,'Square')
+  radio.style('width', '6px');
+  //above statement puts the buttons vertically
+  radio.position(400,50)
+  radio.selected('1')//default selected option
+  textAlign(CENTER);
+  radio.changed(handleRadio)
+
+}//end of function myRadio()
+
+function handleRadio(){
+  background('khaki')
+  code=radio.value()
+  //background('khaki')
+  //init()
+ // dispSig()
+  
+}//end of handle radio
+
+ 
+ function init(){
+  k=-1
+  //samples=s1.value()
+  samples=100
+  T=1/f;tstep=T/samples
+  //print('tstep='+tstep)
+  //N=T/tstep
+  N=samples
+  for(i=0;i<N;i++){
+    Xcos[i]=0;Xsin[i]=0
+    x[i]=0
+  } 
+  //print(Xcos,Xsin)
+}//end of function init()
+
+function createSig(code){
+//print('code= '+code)
+for(i=0;i<N;i++){
+  
+ if(code==1){//sinc()
+    rang= (10*PI*i)/N
+   if(i==0){x[i]=x[i+1]}else
+   {x[i]=A*2*sin(degrees(rang))/rang}
+  }//end of sinc
+  
+ if(code==2){//Pulse
+   if((i >= N/4)&&(i<= 3*(N/4)) ){x[i]=A}//endof if
+  }//end of pulse
+  
+ if(code==3 || code==9){//3:sine,9:FW Rect
+  rang=(2*PI*i)/N
+    if(code==3){x[i]=A*sin(degrees(rang))}
+    if(code==9){x[i]=abs(A*sin(degrees(rang)))}
+  }//end of sine
+  
+ if(code==4){//cosine
+  rang=(2*PI*i)/N
+    x[i]=A*cos(degrees(rang))
+  }//end of cosine
+  
+  if(code==5){//Ramp
+    x[i]=A*i/N
+  }//end of ramp
+  
+  if(code==6){//Impulse
+    if(i==N/2){x[i]=A}else{x[i]=0}
+  }//end of Impulse
+  
+  if(code==7){//DC
+    x[i]=A
+  }//end of DC
+  
+  if(code==8){//Triangle
+    if(i <= N/4){x[i]=A*i/(N/4)}
+    if((i > N/4)&&(i < 3*(N/4)))
+    {x[i]=2*A-A*i/(N/4)}
+    if((i >= (3*N/4)&&(i < N)))
+    {x[i]=-4*A+A*i/(N/4)}
+  }//end of Triangle
+  
+  if(code==10){//HW Rect
+  rang=(2*PI*i)/N
+    if(i<=N/2){x[i]=A*sin(degrees(rang))}else{x[i]=0}
+  }//end of HW Rect
+  
+  if(code==11){//Hamming Window
+  rang=(2*PI*i)/N
+    x[i]=A*(.54-.46*cos(degrees(rang)))
+  }//Hamming Window
+  
+  if(code==12){//Hanning Window
+  rang=(PI*i)/N
+    x[i]=A*(sin(degrees(rang))*sin(degrees(rang)))
+  }//Hamming Window
+  
+  if(code==13){//sq wave
+  rang=(2*PI*i)/N
+    x[i]=A*cos(degrees(rang))
+    if(x[i]>0){x[i]=A}else{x[i]=-A}
+  }//sq wave
+  
+ //Insert new signals above this 
+}//Boiler plate end of for(i=0;i<N;i++) loop
+  
+//}//end of for(i=0;i<N;i++) loop
+  
+}//end of function creatSig()
+function dft(){
+  //print('x[]='+x)
+  //print('N='+N)
+  for(m=0;m < N;m++){
+   for(n=0;n < N ;n++){
+     //print('x[n]='+x[n])
+     Xcos[m]=(Xcos[m]+x[n]*cos(degrees(2*PI*m*n/(N))))
+     Xsin[m]=(Xsin[m]-x[n]*sin(degrees(2*PI*m*n/(N))))
+     }//end of inner loop for n
+   Xcos[m]=round((Xcos[m])*1000)/1000
+   Xsin[m]=round((Xsin[m])*100)/100
+    
+   Xmag[m]=(sqrt((Xcos[m]**2)+(Xsin[m]**2)))
+    if((m==0)&&(code==7)){Xmag[m]=10*Xmag[m]/N}
+    if((code==6)){Xmag[m]=10*Xmag[m]}
+   Xmag[m]=round((Xmag[m])*1000)/1000
+   Xph[m]=atan2(Xsin[m],Xcos[m])
+   Xph[m]=round((Xph[m])*1000)/1000
+    //print('Xmag[m]='+Xmag[m])
+  }//end of outer loop for m
+}//end of function DFT
+
+function dispSig(){
+  //===========================
+  //for disp of signal x[i]
+  //===========================
+  xo=-width/2.1//xoffset
+  yo=-220//yoffset for signal plot
+  yd=yo+220
+  //rect(xo,yo-A,xp,A)
+for(i=0;i<x.length;i++){
+  //xpa=300//expand along x axis, defined in setup
+  strokeWeight(4)
+  push();stroke('green');strokeWeight(4)
+  x1=xo+i*xpa/N;y1=yo;
+  x2=x1;y2=y1-x[i]
+  //{print('i= '+i+' x[i]= '+x[i])}
+  line(-width/2,yo,-130,yo)//signal base line
+  push();stroke('khaki')
+  push();stroke('black')
+  line(xo,y1+10,xo,y1-10)
+  pop()
+  text('t=o',xo,y1+20);
+  text('Time --> ',xo+frameCount/10,y1+20);
+  push();textSize(30)
+  
+  stroke('acqua')
+  text('DFT Zoo',xo+140+frameCount/50,y1-100)
+  
+  pop()
+  pop()
+  
+  if(code==6){
+  line(x1,y1,x2,y2)//signal bar plot
+     }
+  push();stroke('red')
+  if((code==2) && (i==N/4))
+  {line(x1,y1,x1,y2)}//pulse look gud
+  if((code==2) && (i==3*N/4))
+  {line(x1,y1,x1,y2)}//pulse look gud
+  
+  if((code==13) && (i==N/4))
+  {
+    xxx=x1
+    line(x1,y1,x1,y2)
+    line(x1,y1,x1,y2-yo*.9)
+  }//sq wave look gud
+  
+  
+  if((code==13) && (i==3*N/4))
+  {
+    line(x1,y1,x1,y2)
+    line(x1,y1,x1,y2+yo*.9)
+  }//sq wave look gud
+  
+  
+  circle(x1,y2,1)//signal point plot
+  pop()
+  pop()
+
+}//end of for loop
+
+}//end of dispSig()
+
+function dispDFT(){
+  //print('Xcmag[]=  '+Xph)
+   xp=width
+   xo=-width/2.1//xoffset
+   yd=-120+120//y offset of dft mag plot
+   yp=yd+100//y offset of dft phase plot
+  line(xo,yd,x2,yd)//DFT mag base line
+  push();stroke('green')
+  line(xo,yp,x2,yp)//DFT ph base line
+  pop()
+  push();stroke('khaki')
+  cent=150
+  text('<-- Negative Frequency --< ',xo+cent-frameCount/20,yd+20);
+  push();stroke('black')
+  line(xo+cent,yd+10,xo+cent,yd-8)
+  pop()
+  text('f=0',xo+cent,yd+12);
+  text('                        >--Positive Frequency --> ',xo+cent+frameCount/20,yd+20);
+  pop()
+  //plotting of centered dft mag and ph 
+ for(i=0;i<(N-1);i++){
+ //xpa is expansion along x axis , defined in setup()
+  xx1=xo+i*xpa/N
+  xx2=xo+(i+1)*xpa/N
+   
+  yy1=yd-5*(Xcmag[i]/N)// present point,mag
+  yy2=yd-5*(Xcmag[(i+1)]/N)//next point, mag
+   
+  yp1=yp-(Xcph[i])// present point, phase
+  //yp2=yp-(Xcph[(i+1)])//next point,phase
+   push()
+   stroke('indigo')
+  if(code<=2){line(xx1,yy1,xx2,yy2)}//conn points,mag
+  if(code>2){line(xx1,yd,xx1,yy1)} //bar,
+  if(code){line(xx1,yp,xx1,yp1)} //bar,ph 
+   pop() 
+}//end of for loop
+}//end of dispSig1()
+
+function centerDFT(){
+ for(i=0;i<N/2-1;i++){
+   mscale=2
+   Xcmag[N/2+i]=Xmag[i]/mscale
+   Xcmag[N/2-i]=Xmag[i]/mscale
+   pscale=5
+   Xcph[N/2+i]=Xph[i]/pscale
+   Xcph[N/2-i]=-Xph[i]/pscale
+}
+}//end of function centerDFT()
+
+
+
+
+</script>
+
+  </head>
+  <body>
+  </body>
+</html>
