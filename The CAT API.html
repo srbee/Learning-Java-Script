@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title> The Cat API</title>
+<script>
+function ajax_get(url, callback) {
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+      console.log('responseText:' + xmlhttp.responseText);
+      try {
+        var data = JSON.parse(xmlhttp.responseText);
+      } catch (err) {
+        console.log(err.message + " in " + xmlhttp.responseText);
+        return;
+      }
+      callback(data);
+    }
+  };
+
+  xmlhttp.open("GET", url, true);
+  xmlhttp.send();
+}
+
+/*
+ajax_get('https://api.thecatapi.com/v1/images/search?size=full', function(data) {
+ document.getElementById("id").innerHTML = "   data[0]['id'] =   "+data[0]["id"];
+ document.getElementById("url").innerHTML = "   data[0]['url'] = "+data[0]["url"];
+
+  var addressString = '<img src="' + data[0]["url"] + '">';
+  
+  document.getElementById("image").innerHTML = addressString;
+});
+
+*/
+function again(){
+ajax_get('https://api.thecatapi.com/v1/images/search?size=full', function(data) {
+ document.getElementById("id").innerHTML = "   data[0]['id'] =   "+data[0]["id"];
+ document.getElementById("url").innerHTML = "   data[0]['url'] = "+data[0]["url"];
+
+  var addressString = '<img src="' + data[0]["url"] + '">';
+  
+  document.getElementById("image").innerHTML = addressString;
+});
+
+
+
+
+
+ // I am unable to write code for this function
+ //where I want to run the prog again for the next cat
+}//end of function again
+
+</script>
+</head>
+<body>
+<h1> The Cat API </h1>
+<h2>!!!! Wait for the Cat picture !!! </h2>
+<div id="mydebug"> </div>
+<button onclick="again">Cat Again</button>
+<div id="id"></div>
+<div id="url"></div>
+
+<div id="image"></div>
+</body>
+</html>
